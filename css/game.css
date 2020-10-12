@@ -1,0 +1,112 @@
+#names {
+    display: flex;
+    width: 280px;
+    padding: 0 1rem 0.2rem;
+}
+
+#names .name {
+    width: 50%;
+    font-size: 1rem;
+}
+
+#names #p2-name {
+    text-align: right;
+}
+
+#scoreboard {
+    display: flex;
+    width: 280px;
+}
+
+#scoreboard .score-info {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    padding: 0.8rem 0;
+    border-radius: 15px 0 0 15px;
+    background: #dddcdc;
+    color: #000000;
+    font-size: 1.5rem;
+    justify-content: space-around;
+}
+
+#scoreboard #p2.score-info {
+    border-radius: 0 15px 15px 0;
+}
+
+#scoreboard .score-info.move {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+#scoreboard .score-info.move .o {
+    border: 7px solid #ffffff;
+    color: #ffffff;
+}
+
+#scoreboard .score-info.move .x::before,
+#scoreboard .score-info.move .x::after {
+    background: #ffffff;
+}
+
+#board {
+    width: 270px;
+    height: 270px;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+#board .square {
+    width: 90px;
+    height: 90px;
+    border: 3px solid var(--primary-color);
+}
+
+#board .square .o,
+#board .square .x {
+    width: 65%;
+    height: 65%;
+    transition: transform 300ms;
+}
+
+#board .square .o {
+    border: 10px solid var(--color-o);
+}
+
+#board .square .x::before,
+#board .square .x::after {
+    background: var(--color-x);
+    width: 10px;
+}
+
+#board .square.win {
+    --color-o: #009639;
+    --color-x: #009639;
+}
+
+#board .row:nth-child(1) .square {
+    border-top: none;
+}
+
+#board .row .square:nth-child(3) {
+    border-right: none;
+}
+
+#board .row:nth-child(3) .square {
+    border-bottom: none;
+}
+
+#board .row .square:nth-child(1) {
+    border-left: none;
+}
+
+#restart-btn {
+    width: 145px;
+    font-size: 1.2rem;
+    margin: 1.5rem auto;
+}
+
+#restart-btn svg {
+    width: 1.2em;
+    height: 1.2rem;
+}
