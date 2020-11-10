@@ -16,9 +16,8 @@
     font-size: 18px;
     font-family: "Sniglet", "Comic Sans MS", "Comic Sans", sans-serif;
 
-    --bg-main: #ffffff;
-    --text-main: #000000;
-    ;
+    --bg-main: #000000;
+    --text-main: #ffffff;
     --primary-color: #da3232;
 
     --color-o: #007dff;
@@ -41,7 +40,7 @@ body {
     min-height: 100vh;
     padding-top: 80px;
     background: var(--bg-main);
-    transition: background 250ms;
+    transition: background 400ms;
 }
 
 button {
@@ -49,7 +48,7 @@ button {
     border: none;
     font-family: inherit;
     color: inherit;
-    transition: background 250ms;
+    transition: background 400ms;
     cursor: pointer;
 }
 
@@ -101,7 +100,7 @@ header {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0.8rem 0.5rem;
+    padding: 0.6rem 0.5rem;
     background: var(--primary-color);
     color: #ffffff;
     position: fixed;
@@ -141,13 +140,13 @@ header h1 {
 
 /* HOME */
 h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     text-align: center;
 }
 
 /* choose symbol(O/X) */
 #symbols-container {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 #symbols {
@@ -185,7 +184,7 @@ h3 {
     background: var(--primary-color);
     color: #ffffff;
     margin: 1rem auto;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem 1rem;
     font-size: 1.7rem;
     font-weight: bold;
 }
@@ -207,7 +206,7 @@ h3 {
 }
 
 #home .main-btn {
-    width: 205px;
+    width: 215px;
     padding: 0.6rem 1.2rem;
 }
 
@@ -268,6 +267,10 @@ h3 {
     transform: translate(-1px, -2px);
     transition: transform 250ms;
     pointer-events: none;
+}
+
+.setting .toggle-btn[value="on"] {
+    background: #8dcd5c;
 }
 
 .setting .toggle-btn[value="on"] .circle {
