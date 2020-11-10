@@ -4,7 +4,7 @@ const app = {
     active_page: null,
     themes: {
         dark: {
-            bg: "#0c0910",
+            bg: "#000000",
             text: "#ffffff",
         },
         light: {
@@ -12,11 +12,19 @@ const app = {
             text: "#000000",
         },
     },
-    dark_theme: false,
+    dark_theme: true,
     mode: null,
     level: null,
     sound: true,
     tap_sound: null,
+
+    play_sound() {
+        if (app.sound) {
+            app.tap_sound.pause();
+            app.tap_sound.currentTime = 0;
+            app.tap_sound.play();
+        }
+    }
 };
 
 const win_combos = [
@@ -31,15 +39,15 @@ const win_combos = [
 ];
 
 const player1 = {
-        name: "Player 1",
-        symbol: "o",
-        score: 0,
-    },
-    player2 = {
-        name: "Player 2",
-        symbol: "x",
-        score: 0,
-    };
+    name: "Player 1",
+    symbol: "o",
+    score: 0,
+},
+player2 = {
+    name: "Player 2",
+    symbol: "x",
+    score: 0,
+};
 
 let current_player = player1;
 
@@ -56,19 +64,16 @@ window.onload = _e => {
 
     // adding events
     app.tap_sound = new Audio(
-        "../audio/udoxas_popping.wav"
+        "../audio/tapsound.mp3"
     );
 
     document.querySelectorAll("button").forEach((btn) => {
-        btn.addEventListener("click", _e => {
-            if (app.sound)
-                app.tap_sound.play();
-        });
+        btn.addEventListener("click", _e => app.play_sound());
     });
 
     document
-        .querySelectorAll("#symbols .symbol")
-        .forEach(symbol => symbol.onclick = choose_symbol);
+    .querySelectorAll("#symbols .symbol")
+    .forEach(symbol => symbol.onclick = choose_symbol);
 
     $("#back-btn").onclick = _e => {
         if (app.active_page === game) {
@@ -93,7 +98,7 @@ window.onload = _e => {
     document.querySelectorAll(".toggle-btn").forEach((btn) => {
         btn.addEventListener(
             "click",
-            _e => (btn.value = btn.value === "on" ? "off" : "on")
+            _e => (btn.value = btn.value === "on" ? "off": "on")
         );
     });
 
@@ -123,13 +128,7 @@ window.onload = _e => {
 
         start_game(e, true);
     };
-    $("#exit-btn").onclick = _e => {
-        if (navigator.app) {
-            navigator.app.exitApp();
-        } else {
-            window.close();
-        }
-    };
+    $("#exit-btn").onclick = _e => window.close();
 
     $("#easy-btn").onclick = e => {
         app.level = "easy";
@@ -156,7 +155,7 @@ function choose_symbol(e) {
     e.target.classList.add("selected");
 
     player1.symbol = $(".selected").firstElementChild.className;
-    player2.symbol = player2.symbol = player1.symbol === "o" ? "x" : "o";
+    player2.symbol = player2.symbol = player1.symbol === "o" ? "x": "o";
 }
 
 function change_theme() {
@@ -251,22 +250,21 @@ function board_state() {
     return squares.map((square) => {
         let first_child = square.firstElementChild;
 
-        return first_child === null ? null : first_child.className;
+        return first_child === null ? null: first_child.className;
     });
 }
 
 function move() {
-    this.appendChild(symbol_element(current_player));
+    app.play_sound();
 
-    if (app.sound)
-        app.tap_sound.play();
+    this.appendChild(symbol_element(current_player));
 
     this.onclick = null;
 
     let result = game_result(board_state());
 
     if (result === null) {
-        current_player = current_player === player1 ? player2 : player1;
+        current_player = current_player === player1 ? player2: player1;
         show_move();
     } else {
         game_over(result);
@@ -276,7 +274,7 @@ function move() {
 function game_result(board) {
     if (check_board(player1, board)) return player1;
     else if (check_board(player2, board)) return player2;
-    else return empty_squares(board).length === 0 ? "tie" : null;
+    else return empty_squares(board).length === 0 ? "tie": null;
 }
 
 function check_board(player, board = board_state()) {
@@ -334,7 +332,7 @@ function random_move() {
 
 function best_move(board, empty_squares) {
     let best_score = -Infinity,
-        best_move;
+    best_move;
 
     for (let index of empty_squares) {
         board[index] = player2.symbol;
@@ -356,7 +354,7 @@ function minimax(board, depth, is_max) {
 
     if (result !== null) {
         if (result === "tie") return 0;
-        return result === player2 ? 100 - depth : -100 + depth;
+        return result === player2 ? 100 - depth: -100 + depth;
     }
 
     const empty_squares_i = empty_squares(board);
