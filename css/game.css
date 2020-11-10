@@ -28,6 +28,7 @@
     color: #000000;
     font-size: 1.5rem;
     justify-content: space-around;
+    transition: background 250ms;
 }
 
 #scoreboard #p2.score-info {
@@ -64,19 +65,20 @@
 
 #board .square .o,
 #board .square .x {
-    width: 65%;
-    height: 65%;
+    width: 70%;
+    height: 70%;
     transition: transform 300ms;
 }
 
 #board .square .o {
-    border: 10px solid var(--color-o);
+    border: 13px solid var(--color-o);
 }
 
 #board .square .x::before,
 #board .square .x::after {
     background: var(--color-x);
-    width: 10px;
+    width: 13px;
+    border-radius: 2.7px;
 }
 
 #board .square.win {
