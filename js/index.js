@@ -39,20 +39,20 @@ const win_combos = [
 ];
 
 const player1 = {
-    name: "Player 1",
-    symbol: "o",
-    score: 0,
-},
-player2 = {
-    name: "Player 2",
-    symbol: "x",
-    score: 0,
-};
+        name: "Player 1",
+        symbol: "o",
+        score: 0,
+    },
+    player2 = {
+        name: "Player 2",
+        symbol: "x",
+        score: 0,
+    };
 
 let current_player = player1;
 
 // elements
-let home, levels, game, squares, name1, name2;
+let home, levels, game, squares, name1, name2, footer;
 
 window.onload = _e => {
     home = $("#home");
@@ -61,6 +61,7 @@ window.onload = _e => {
     squares = Array.from(document.querySelectorAll(".square"));
     name1 = $("#p1-name");
     name2 = $("#p2-name");
+    footer = $("footer");
 
     // adding events
     app.tap_sound = new Audio(
@@ -72,8 +73,8 @@ window.onload = _e => {
     });
 
     document
-    .querySelectorAll("#symbols .symbol")
-    .forEach(symbol => symbol.onclick = choose_symbol);
+        .querySelectorAll("#symbols .symbol")
+        .forEach(symbol => symbol.onclick = choose_symbol);
 
     $("#back-btn").onclick = _e => {
         if (app.active_page === game) {
@@ -90,6 +91,11 @@ window.onload = _e => {
             home.className = "active";
             app.active_page = home;
         }
+
+        if (app.active_page === home)
+            footer.style.display = "block";
+        else
+            footer.style.display = "none";
     }
 
     $("#settings-btn").onclick = _e => $("#settings").classList.add("active");
@@ -98,7 +104,7 @@ window.onload = _e => {
     document.querySelectorAll(".toggle-btn").forEach((btn) => {
         btn.addEventListener(
             "click",
-            _e => (btn.value = btn.value === "on" ? "off": "on")
+            _e => (btn.value = btn.value === "on" ? "off" : "on")
         );
     });
 
@@ -119,6 +125,7 @@ window.onload = _e => {
         levels.className = "active";
 
         app.active_page = levels;
+        footer.style.display = "none";
     };
     $("#multi-player-btn").onclick = e => {
         app.mode = "multi-player";
@@ -127,8 +134,8 @@ window.onload = _e => {
         player2.name = "Player 2";
 
         start_game(e, true);
+        footer.style.display = "none";
     };
-    $("#exit-btn").onclick = _e => window.close();
 
     $("#easy-btn").onclick = e => {
         app.level = "easy";
@@ -155,7 +162,7 @@ function choose_symbol(e) {
     e.target.classList.add("selected");
 
     player1.symbol = $(".selected").firstElementChild.className;
-    player2.symbol = player2.symbol = player1.symbol === "o" ? "x": "o";
+    player2.symbol = player2.symbol = player1.symbol === "o" ? "x" : "o";
 }
 
 function change_theme() {
@@ -250,7 +257,7 @@ function board_state() {
     return squares.map((square) => {
         let first_child = square.firstElementChild;
 
-        return first_child === null ? null: first_child.className;
+        return first_child === null ? null : first_child.className;
     });
 }
 
@@ -264,7 +271,7 @@ function move() {
     let result = game_result(board_state());
 
     if (result === null) {
-        current_player = current_player === player1 ? player2: player1;
+        current_player = current_player === player1 ? player2 : player1;
         show_move();
     } else {
         game_over(result);
@@ -274,7 +281,7 @@ function move() {
 function game_result(board) {
     if (check_board(player1, board)) return player1;
     else if (check_board(player2, board)) return player2;
-    else return empty_squares(board).length === 0 ? "tie": null;
+    else return empty_squares(board).length === 0 ? "tie" : null;
 }
 
 function check_board(player, board = board_state()) {
@@ -332,7 +339,7 @@ function random_move() {
 
 function best_move(board, empty_squares) {
     let best_score = -Infinity,
-    best_move;
+        best_move;
 
     for (let index of empty_squares) {
         board[index] = player2.symbol;
@@ -354,7 +361,7 @@ function minimax(board, depth, is_max) {
 
     if (result !== null) {
         if (result === "tie") return 0;
-        return result === player2 ? 100 - depth: -100 + depth;
+        return result === player2 ? 100 - depth : -100 + depth;
     }
 
     const empty_squares_i = empty_squares(board);

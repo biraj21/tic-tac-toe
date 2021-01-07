@@ -41,6 +41,7 @@ body {
     padding-top: 80px;
     background: var(--bg-main);
     transition: background 400ms;
+    position: relative;
 }
 
 button {
@@ -206,7 +207,7 @@ h3 {
 }
 
 #home .main-btn {
-    width: 215px;
+    width: 220px;
     padding: 0.6rem 1.2rem;
 }
 
@@ -275,4 +276,19 @@ h3 {
 
 .setting .toggle-btn[value="on"] .circle {
     transform: translate(24px, -2px);
+}
+
+footer {
+    width: 100vw;
+    text-align: center;
+    padding-bottom: 0.8rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+@media only screen and (max-height: 440px) {
+    footer {
+        position: static;
+    }
 }
