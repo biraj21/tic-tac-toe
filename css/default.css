@@ -1,5 +1,3 @@
-@import "game.css";
-
 * {
     margin: 0;
     padding: 0;
@@ -181,19 +179,20 @@ h3 {
 .main-btn {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     border-radius: 30px;
     background: var(--primary-color);
     color: #ffffff;
     margin: 1rem auto;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
+    text-align: center;
     font-size: 1.7rem;
     font-weight: bold;
+    position: relative;
 }
 
-.main-btn svg {
-    float: left;
+.main-btn .icon {
     fill: #ffffff;
-    margin-right: 0.5rem;
 }
 
 .main-btn:hover {
@@ -202,23 +201,22 @@ h3 {
     box-shadow: 0 0 5px var(--primary-color);
 }
 
-.main-btn:hover svg {
+.main-btn:hover .icon {
     fill: var(--primary-color);
 }
 
 #home .main-btn {
-    width: 220px;
-    padding: 0.6rem 1.2rem;
+    width: 230px;
+    text-align: center;
 }
 
-#home .main-btn svg {
+#home .main-btn .icon {
     width: 1.6rem;
     height: 1.6rem;
 }
 
 #levels .main-btn {
     width: 200px;
-    justify-content: center;
 }
 
 #settings {
@@ -285,6 +283,10 @@ footer {
     position: absolute;
     left: 0;
     bottom: 0;
+}
+
+a {
+    color: dodgerblue;
 }
 
 @media only screen and (max-height: 440px) {

@@ -103,12 +103,12 @@
 }
 
 #restart-btn {
-    width: 145px;
+    width: 150px;
     font-size: 1.2rem;
     margin: 1.5rem auto;
 }
 
-#restart-btn svg {
+#restart-btn .icon {
     width: 1.2em;
     height: 1.2rem;
 }
