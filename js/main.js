@@ -152,6 +152,7 @@ function start_game(new_game = true) {
     current_player = player1;
     game.active_page = game_el;
 
+    // reset scores if it's a new game
     if (new_game) {
         home_el.className = "inactive";
         difficulty_el.className = "inactive";
@@ -167,6 +168,7 @@ function start_game(new_game = true) {
         update_scoreboard();
     }
 
+    // clear the board
     for (let i = 0; i < 9; ++i) {
         board_state[i] = null;
         cells_el[i].classList.remove("win");
@@ -201,7 +203,7 @@ function draw_symbol(player) {
 }
 
 function enable_cell_clicks() {
-    get_empty_cells().forEach(i => cells_el[i].onclick = e => move(e));
+    get_empty_cells().forEach(i => cells_el[i].onclick = e => player_move(e));
 }
 
 function get_empty_cells(given_state = board_state) {
@@ -209,7 +211,7 @@ function get_empty_cells(given_state = board_state) {
         .filter(i => given_state[i] === null);
 }
 
-function move(e) {
+function player_move(e) {
     game.play_sound();
 
     let cell = e.target;
@@ -221,6 +223,9 @@ function move(e) {
     if (result === null) {
         current_player = current_player === player1 ? player2 : player1;
         highlight_current_player();
+
+        if (game.mode === "single-player" && current_player === player2)
+            computer_move();
     } else {
         game_over(result);
     }
