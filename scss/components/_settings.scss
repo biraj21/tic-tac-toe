@@ -1,0 +1,37 @@
+#settings {
+    background: #222222;
+    border-radius: 15px;
+    color: #ffffff;
+    padding: 1rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 250ms;
+
+    &.active {
+        width: 250px;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    h3 {
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+
+    .setting {
+        width: 100%;
+        margin: 0.8rem 0;
+
+        .toggle-btn {
+            float: right;
+        }
+    }
+
+    #save-settings-btn {
+        height: 32px;
+        font-size: 1rem;
+        padding: 0 0.8rem;
+        margin: 0 auto;
+    }
+}

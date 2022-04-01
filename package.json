@@ -1,0 +1,9 @@
+{
+  "name": "tic-tac-toe",
+  "scripts": {
+    "scss": "sass --no-source-map --style compressed --watch scss:css"
+  },
+  "devDependencies": {
+    "sass": "^1.49.10"
+  }
+}

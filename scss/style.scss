@@ -1,0 +1,166 @@
+@use "components/button";
+@use "components/toggle-button";
+@use "components/settings";
+@use "pages/difficulty";
+@use "pages/game";
+@use "pages/home";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@font-face {
+    font-family: Sniglet;
+    src: url("../fonts/Sniglet-Regular.ttf");
+}
+
+:root {
+    font-size: 18px;
+    font-family: "Sniglet", "Comic Sans MS", "Comic Sans", sans-serif;
+
+    --bg-main: #000;
+    --text-main: #fff;
+    --primary-color: #da3232;
+
+    --color-o: #007dff;
+    --color-x: #ffd000;
+
+    color: var(--text-main);
+}
+
+:root.light {
+    --bg-main: #fff;
+    --text-main: #000;
+}
+
+.flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+body {
+    width: 100vw;
+    min-height: 100vh;
+    padding-top: 80px;
+    background: var(--bg-main);
+    transition: background-color 400ms;
+    position: relative;
+}
+
+button {
+    display: block;
+    border: none;
+    font-family: inherit;
+    color: inherit;
+    transition: background-color 400ms;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+/* O and X */
+.o,
+.x {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+    pointer-events: none;
+}
+
+.o {
+    border: 7px solid var(--primary-color);
+    border-radius: 50%;
+    background: transparent;
+}
+
+.x {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &::before,
+    &::after {
+        content: "";
+        display: block;
+        width: 7px;
+        height: 100%;
+        border-radius: 2px;
+        background: var(--primary-color);
+        transform-origin: center;
+        position: absolute;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        transform: rotate(-45deg);
+    }
+}
+
+header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.6rem 0.5rem;
+    background: var(--primary-color);
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+
+    h1 {
+        margin: 0 auto;
+        font-size: 2rem;
+        letter-spacing: 1.5pt;
+    }
+
+    #back-btn,
+    #settings-btn {
+        width: 26px;
+        height: 26px;
+        background: transparent;
+    }
+
+    #back-btn {
+        margin-left: 4px;
+    }
+}
+
+footer {
+    width: 100vw;
+    text-align: center;
+    padding-bottom: 0.8rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    a {
+        color: dodgerblue;
+    }
+
+    @media only screen and (max-height: 440px) {
+        position: static;
+    }
+}
+
+.inactive {
+    width: 0;
+    height: 0;
+    transform: scale(0);
+}
+
+.active {
+    width: auto;
+    height: auto;
+    transform: scale(1);
+    transition: transform 250ms;
+}

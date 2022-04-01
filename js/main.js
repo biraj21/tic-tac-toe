@@ -2,16 +2,6 @@
 
 const app = {
     active_page: null,
-    themes: {
-        dark: {
-            bg: "#000000",
-            text: "#ffffff",
-        },
-        light: {
-            bg: "#ffffff",
-            text: "#000000",
-        },
-    },
     dark_theme: true,
     mode: null,
     level: null,
@@ -38,45 +28,45 @@ const win_combos = [
     [2, 4, 6],
 ];
 
+const O = "o";
+const X = "x";
+
 const player1 = {
         name: "Player 1",
-        symbol: "o",
+        symbol: O,
         score: 0,
     },
     player2 = {
         name: "Player 2",
-        symbol: "x",
+        symbol: X,
         score: 0,
     };
 
 let current_player = player1;
 
 // elements
-let home, levels, game, squares, name1, name2, footer;
+let home, levels, game, squares, name1, name2;
 
-window.onload = _e => {
+window.onload = e => {
     home = $("#home");
-    levels = $("#levels");
+    levels = $("#difficulty");
     game = $("#game");
     squares = Array.from(document.querySelectorAll(".square"));
     name1 = $("#p1-name");
     name2 = $("#p2-name");
-    footer = $("footer");
 
     // adding events
-    app.tap_sound = new Audio(
-        "../audio/tapsound.mp3"
-    );
+    app.tap_sound = new Audio("/audio/tapsound.mp3");
 
-    document.querySelectorAll("button").forEach((btn) => {
-        btn.addEventListener("click", _e => app.play_sound());
-    });
+    document.querySelectorAll("button")
+        .forEach(btn => {
+            btn.addEventListener("click", () => app.play_sound());
+        });
 
-    document
-        .querySelectorAll("#symbols .symbol")
+    document.querySelectorAll("#symbols .symbol")
         .forEach(symbol => symbol.onclick = choose_symbol);
 
-    $("#back-btn").onclick = _e => {
+    $("#back-btn").onclick = () => {
         if (app.active_page === game) {
             game.className = "flex inactive";
             if (app.mode === "single-player") {
@@ -91,31 +81,23 @@ window.onload = _e => {
             home.className = "active";
             app.active_page = home;
         }
+    };
 
-        if (app.active_page === home)
-            footer.style.display = "block";
-        else
-            footer.style.display = "none";
-    }
+    $("#settings-btn").onclick = e => $("#settings").classList.add("active");
+    $("#save-settings-btn").onclick = e => $("#settings").classList.remove("active");
 
-    $("#settings-btn").onclick = _e => $("#settings").classList.add("active");
-    $("#save-settings-btn").onclick = _e => $("#settings").classList.remove("active");
-
-    document.querySelectorAll(".toggle-btn").forEach((btn) => {
+    document.querySelectorAll(".toggle-btn").forEach(btn => {
         btn.addEventListener(
             "click",
-            _e => (btn.value = btn.value === "on" ? "off" : "on")
+            () => (btn.value = btn.value === "on" ? "off" : "on")
         );
     });
 
-    $("#theme-btn").addEventListener("click", _e => {
-        app.dark_theme = !app.dark_theme;
-        change_theme();
-    });
+    $("#theme-btn").addEventListener("click", () => change_theme());
 
-    $("#sound-btn").addEventListener("click", _e => (app.sound = !app.sound));
+    $("#sound-btn").addEventListener("click", e => (app.sound = !app.sound));
 
-    $("#single-player-btn").onclick = _e => {
+    $("#single-player-btn").onclick = e => {
         app.mode = "single-player";
 
         player1.name = "You";
@@ -125,8 +107,8 @@ window.onload = _e => {
         levels.className = "active";
 
         app.active_page = levels;
-        footer.style.display = "none";
     };
+
     $("#multi-player-btn").onclick = e => {
         app.mode = "multi-player";
 
@@ -134,17 +116,18 @@ window.onload = _e => {
         player2.name = "Player 2";
 
         start_game(e, true);
-        footer.style.display = "none";
     };
 
     $("#easy-btn").onclick = e => {
         app.level = "easy";
         start_game(e, true);
     };
+
     $("#medium-btn").onclick = e => {
         app.level = "medium";
         start_game(e, true);
     };
+
     $("#impossible-btn").onclick = e => {
         app.level = "impossible";
         start_game(e, true);
@@ -162,22 +145,20 @@ function choose_symbol(e) {
     e.target.classList.add("selected");
 
     player1.symbol = $(".selected").firstElementChild.className;
-    player2.symbol = player2.symbol = player1.symbol === "o" ? "x" : "o";
+    player2.symbol = player2.symbol = player1.symbol === O ? X : O;
 }
 
 function change_theme() {
+    app.dark_theme = !app.dark_theme;
     let root = document.documentElement;
 
-    if (app.dark_theme) {
-        root.style.setProperty("--bg-main", app.themes.dark.bg);
-        root.style.setProperty("--text-main", app.themes.dark.text);
-    } else {
-        root.style.setProperty("--bg-main", app.themes.light.bg);
-        root.style.setProperty("--text-main", app.themes.light.text);
-    }
+    if (app.dark_theme)
+        root.classList.remove("light");
+    else
+        root.classList.add("light");
 }
 
-function start_game(_e, new_game = true) {
+function start_game(e, new_game = true) {
     current_player = player1;
 
     app.active_page = game;
@@ -246,30 +227,26 @@ function symbol_element(player) {
 }
 
 function add_click() {
-    empty_squares().forEach((i) => (squares[i].onclick = move));
+    empty_squares().forEach(i => (squares[i].onclick = move));
 }
 
 function empty_squares(board = board_state()) {
-    return board.map((_, i) => i).filter((i) => board[i] === null);
+    return board.map((_, i) => i).filter(i => board[i] === null);
 }
 
 function board_state() {
-    return squares.map((square) => {
+    return squares.map(square => {
         let first_child = square.firstElementChild;
-
         return first_child === null ? null : first_child.className;
     });
 }
 
 function move() {
     app.play_sound();
-
     this.appendChild(symbol_element(current_player));
-
     this.onclick = null;
 
     let result = game_result(board_state());
-
     if (result === null) {
         current_player = current_player === player1 ? player2 : player1;
         show_move();
@@ -279,14 +256,17 @@ function move() {
 }
 
 function game_result(board) {
-    if (check_board(player1, board)) return player1;
-    else if (check_board(player2, board)) return player2;
-    else return empty_squares(board).length === 0 ? "tie" : null;
+    if (check_board(player1, board))
+        return player1;
+    else if (check_board(player2, board))
+        return player2;
+    else
+        return empty_squares(board).length === 0 ? "tie" : null;
 }
 
 function check_board(player, board = board_state()) {
     for (let combo of win_combos) {
-        if (combo.every((i) => board[i] === player.symbol))
+        if (combo.every(i => board[i] === player.symbol))
             return combo;
     }
 }

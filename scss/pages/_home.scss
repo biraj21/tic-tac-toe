@@ -1,0 +1,41 @@
+#symbols-container {
+    margin-bottom: 2rem;
+
+    h3 {
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+}
+
+#symbols {
+    width: 140px;
+    display: flex;
+    justify-content: space-between;
+
+    .symbol {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 0 5px var(--primary-color);
+        background: #fff;
+        color: var(--primary-color);
+
+        &.selected {
+            background: var(--primary-color);
+
+            .o {
+                border: 7px solid #fff;
+            }
+
+            .x::before,
+            .x::after {
+                background: #fff;
+            }
+        }
+    }
+}
+
+#modes .btn {
+    width: 200px;
+    text-align: center;
+}

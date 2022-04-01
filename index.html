@@ -3,11 +3,11 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, width=device-width" />
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/default.css" />
-    <link rel="stylesheet" href="css/game.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
     <title>Tic Tac Toe</title>
 </head>
 
@@ -32,6 +32,7 @@
         </button>
     </header>
 
+    <!-- Home Page -->
     <div id="home">
         <div id="symbols-container" class="flex">
             <h3>Play As</h3>
@@ -40,6 +41,7 @@
                 <button class="symbol selected flex">
                     <span class="o"></span>
                 </button>
+
                 <button class="symbol flex">
                     <span class="x"></span>
                 </button>
@@ -47,74 +49,34 @@
         </div>
 
         <div id="modes">
-            <button id="single-player-btn" class="main-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-                    <path d="M0 0h24v24H0z" fill="none" />
-                    <path
-                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                </svg>
-                1 Player
-            </button>
-
-            <button id="multi-player-btn" class="main-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" class="icon">
-                    <g>
-                        <rect fill="none" height="24" width="24" />
-                    </g>
-                    <g>
-                        <g />
-                        <g>
-                            <g>
-                                <path
-                                    d="M16.67,13.13C18.04,14.06,19,15.32,19,17v3h4v-3 C23,14.82,19.43,13.53,16.67,13.13z"
-                                    fill-rule="evenodd" />
-                            </g>
-                            <g>
-                                <circle cx="9" cy="8" fill-rule="evenodd" r="4" />
-                            </g>
-                            <g>
-                                <path
-                                    d="M15,12c2.21,0,4-1.79,4-4c0-2.21-1.79-4-4-4c-0.47,0-0.91,0.1-1.33,0.24 C14.5,5.27,15,6.58,15,8s-0.5,2.73-1.33,3.76C14.09,11.9,14.53,12,15,12z"
-                                    fill-rule="evenodd" />
-                            </g>
-                            <g>
-                                <path d="M9,13c-2.67,0-8,1.34-8,4v3h16v-3C17,14.34,11.67,13,9,13z"
-                                    fill-rule="evenodd" />
-                            </g>
-                        </g>
-                    </g>
-                </svg>
-                2 Players
-            </button>
+            <button id="single-player-btn" class="btn">Computer</button>
+            <button id="multi-player-btn" class="btn">2 Players</button>
         </div>
     </div>
 
-    <div id="levels" class="inactive">
+    <!-- Select Difficulty Page (when playing with computer) -->
+    <div id="difficulty" class="inactive">
         <h3>Difficulty</h3>
 
-        <button id="easy-btn" class="main-btn">Easy</button>
-        <button id="medium-btn" class="main-btn">Medium</button>
-        <button id="impossible-btn" class="main-btn">Impossible</button>
+        <button id="easy-btn" class="btn">Easy</button>
+        <button id="medium-btn" class="btn">Medium</button>
+        <button id="impossible-btn" class="btn">Impossible</button>
     </div>
 
+    <!-- Game Page (where board is there) -->
     <div id="game" class="flex inactive">
         <div id="names">
-            <p id="p1-name" class="name">
-                B
-            </p>
-            <p id="p2-name" class="name">
-                A
-            </p>
+            <p id="p1-name" class="name"></p>
+            <p id="p2-name" class="name"></p>
         </div>
+
         <div id="scoreboard">
-            <div id="p1" class="score-info move">
+            <div id="p1" class="score-info current-move">
                 <p class="score-head flex">
                     <span class="o"></span>
                 </p>
 
-                <p class="score flex">
-                    0
-                </p>
+                <p class="score flex">0</p>
             </div>
 
             <div id="p2" class="score-info">
@@ -122,9 +84,7 @@
                     <span class="x"></span>
                 </p>
 
-                <p class="score flex">
-                    0
-                </p>
+                <p class="score flex">0</p>
             </div>
         </div>
 
@@ -146,15 +106,7 @@
             </tr>
         </table>
 
-        <button id="restart-btn" class="main-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                    d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z" />
-            </svg>
-
-            Restart
-        </button>
+        <button id="restart-btn" class="btn">Restart</button>
     </div>
 
     <div id="settings">
@@ -174,16 +126,14 @@
             </button>
         </div>
 
-        <button id="save-settings-btn" class="main-btn">OK</button>
+        <button id="save-settings-btn" class="btn">OK</button>
     </div>
 
     <footer>
-        Created by <a href="https://github.com/biraj21/" target="_blank">Biraj</a>.&nbsp;&nbsp;Hosted on <a
-            href="https://www.netlify.com/" target="_blank">Netlify</a>.
+        Created by <a href="https://github.com/biraj21/" target="_blank">Biraj</a>.
     </footer>
 
-    <script src=" js/main.js">
-    </script>
+    <script src=" js/main.js"></script>
 </body>
 
 </html>

@@ -28,14 +28,14 @@
     color: #000000;
     font-size: 1.5rem;
     justify-content: space-around;
-    transition: background 250ms;
+    transition: background-color 250ms;
 }
 
 #scoreboard #p2.score-info {
     border-radius: 0 15px 15px 0;
 }
 
-#scoreboard .score-info.move {
+#scoreboard .score-info.current-move {
     background: var(--primary-color);
     color: #ffffff;
 }
