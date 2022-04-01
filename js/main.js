@@ -1,23 +1,6 @@
 "use strict";
 
-const app = {
-    active_page: null,
-    dark_theme: true,
-    mode: null,
-    level: null,
-    sound: true,
-    tap_sound: null,
-
-    play_sound() {
-        if (app.sound) {
-            app.tap_sound.pause();
-            app.tap_sound.currentTime = 0;
-            app.tap_sound.play();
-        }
-    }
-};
-
-const win_combos = [
+const WIN_COMBOS = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -31,6 +14,24 @@ const win_combos = [
 const O = "o";
 const X = "x";
 
+const DRAW = "draw";
+
+const game = {
+    dark_theme: true,
+    mode: null,
+    difficulty: null,
+    sound: true,
+    tap_sound: null,
+
+    play_sound() {
+        if (game.sound) {
+            game.tap_sound.pause();
+            game.tap_sound.currentTime = 0;
+            game.tap_sound.play();
+        }
+    }
+};
+
 const player1 = {
         name: "Player 1",
         symbol: O,
@@ -43,94 +44,83 @@ const player1 = {
     };
 
 let current_player = player1;
+const board_state = Array(9);
 
 // elements
-let home, levels, game, squares, name1, name2;
+let home_el, difficulty_el, game_el, cells_el, p1_name_el, p2_name_el;
 
 window.onload = e => {
-    home = $("#home");
-    levels = $("#difficulty");
-    game = $("#game");
-    squares = Array.from(document.querySelectorAll(".square"));
-    name1 = $("#p1-name");
-    name2 = $("#p2-name");
+    home_el = $("#home");
+    difficulty_el = $("#difficulty");
+    game_el = $("#game");
+    cells_el = Array.from(document.querySelectorAll(".cell"));
+    p1_name_el = $("#p1-name");
+    p2_name_el = $("#p2-name");
 
     // adding events
-    app.tap_sound = new Audio("/audio/tapsound.mp3");
+    game.tap_sound = new Audio("/audio/tapsound.mp3");
 
     document.querySelectorAll("button")
         .forEach(btn => {
-            btn.addEventListener("click", () => app.play_sound());
+            btn.addEventListener("click", () => game.play_sound());
         });
 
     document.querySelectorAll("#symbols .symbol")
         .forEach(symbol => symbol.onclick = choose_symbol);
 
-    $("#back-btn").onclick = () => {
-        if (app.active_page === game) {
-            game.className = "flex inactive";
-            if (app.mode === "single-player") {
-                levels.className = "active";
-                app.active_page = levels;
-            } else {
-                home.className = "active";
-                app.active_page = home;
-            }
-        } else if (app.active_page === levels) {
-            levels.className = "inactive";
-            home.className = "active";
-            app.active_page = home;
-        }
+    $("#home-btn").onclick = () => {
+        game_el.className = "inactive";
+        difficulty_el.className = "inactive";
+        home_el.className = "active";
     };
 
     let settings = $("#settings");
     $("#settings-btn").onclick = () => settings.classList.add("active");
     $("#save-settings-btn").onclick = () => settings.classList.remove("active");
 
-    document.querySelectorAll(".toggle-btn").forEach(btn => {
-        btn.addEventListener(
+    document.querySelectorAll(".toggle-btn")
+        .forEach(btn => btn.addEventListener(
             "click",
-            () => (btn.value = btn.value === "on" ? "off" : "on")
-        );
-    });
+            () => btn.classList.toggle("toggle-btn--on")
+        ));
 
-    $("#theme-btn").addEventListener("click", () => change_theme());
-    $("#sound-btn").addEventListener("click", () => app.sound = !app.sound);
+    $("#theme-btn").onclick = change_theme;
+    $("#sound-btn").onclick = () => game.sound = !game.sound;
 
     $("#single-player-btn").onclick = () => {
-        app.mode = "single-player";
+        game.mode = "single-player";
 
         player1.name = "You";
         player2.name = "Computer";
 
-        home.className = "inactive";
-        levels.className = "active";
+        home_el.className = "inactive";
+        difficulty_el.className = "active";
 
-        app.active_page = levels;
+        game.active_page = difficulty_el;
     };
 
     $("#multi-player-btn").onclick = () => {
-        app.mode = "multi-player";
+        game.mode = "multi-player";
 
         player1.name = "Player 1";
         player2.name = "Player 2";
 
-        start_game(true);
+        start_game();
     };
 
     $("#easy-btn").onclick = () => {
-        app.level = "easy";
-        start_game(true);
+        game.difficulty = "easy";
+        start_game();
     };
 
     $("#medium-btn").onclick = () => {
-        app.level = "medium";
-        start_game(true);
+        game.difficulty = "medium";
+        start_game();
     };
 
     $("#impossible-btn").onclick = () => {
-        app.level = "impossible";
-        start_game(true);
+        game.difficulty = "impossible";
+        start_game();
     };
 
     $("#restart-btn").onclick = () => start_game(false);
@@ -144,15 +134,15 @@ function choose_symbol(e) {
     $(".selected").classList.remove("selected");
     e.target.classList.add("selected");
 
-    player1.symbol = $(".selected").firstElementChild.className;
-    player2.symbol = player2.symbol = player1.symbol === O ? X : O;
+    player1.symbol = $(".selected span").className;
+    player2.symbol = player1.symbol === O ? X : O;
 }
 
 function change_theme() {
-    app.dark_theme = !app.dark_theme;
+    game.dark_theme = !game.dark_theme;
     let root = document.documentElement;
 
-    if (app.dark_theme)
+    if (game.dark_theme)
         root.classList.remove("light");
     else
         root.classList.add("light");
@@ -160,209 +150,184 @@ function change_theme() {
 
 function start_game(new_game = true) {
     current_player = player1;
-
-    app.active_page = game;
+    game.active_page = game_el;
 
     if (new_game) {
-        home.className = "inactive";
-        levels.className = "inactive";
+        home_el.className = "inactive";
+        difficulty_el.className = "inactive";
+        game_el.className = "active";
 
-        game.classList.add("active");
-
-        name1.innerText = player1.name;
-        name2.innerText = player2.name;
+        p1_name_el.innerText = player1.name;
+        p2_name_el.innerText = player2.name;
 
         player1.score = player2.score = 0;
+
+        $("#p1 .score-head span").className = player1.symbol;
+        $("#p2 .score-head span").className = player2.symbol;
+        update_scoreboard();
     }
 
-    for (let square of squares) {
-        square.classList.remove("win");
+    for (let i = 0; i < 9; ++i) {
+        board_state[i] = null;
+        cells_el[i].classList.remove("win");
 
-        let symbol_el = square.firstElementChild;
-
+        let symbol_el = cells_el[i].firstElementChild;
         if (symbol_el)
-            square.removeChild(symbol_el);
+            cells_el[i].removeChild(symbol_el);
     }
 
-    update_scoreboard();
-    show_move();
-    add_click();
+    highlight_current_player();
+    enable_cell_clicks();
 }
 
 function update_scoreboard() {
-    const p1_score_head = $("#p1 .score-head");
-
-    if (p1_score_head.firstElementChild !== null)
-        p1_score_head.removeChild(p1_score_head.firstElementChild);
-
-    p1_score_head.appendChild(symbol_element(player1));
     $("#p1 .score").innerText = player1.score;
-
-    const p2_score_head = $("#p2 .score-head");
-
-    if (p2_score_head.firstElementChild !== null)
-        p2_score_head.removeChild(p2_score_head.firstElementChild);
-
-    p2_score_head.appendChild(symbol_element(player2));
     $("#p2 .score").innerText = player2.score;
 }
 
-function show_move() {
-    $(".current-move").classList.remove("current-move");
+function highlight_current_player() {
+    $(".score-info.turn").classList.remove("turn");
 
     if (current_player === player1)
-        $("#p1").classList.add("current-move");
+        $("#p1").classList.add("turn");
     else
-        $("#p2").classList.add("current-move");
-
-    // after showing move
-    if (app.mode === "single-player" && current_player === player2)
-        computer_move();
+        $("#p2").classList.add("turn");
 }
 
-function symbol_element(player) {
+function draw_symbol(player) {
     const symbol = document.createElement("span");
     symbol.className = player.symbol;
     return symbol;
 }
 
-function add_click() {
-    empty_squares().forEach(i => (squares[i].onclick = move));
+function enable_cell_clicks() {
+    get_empty_cells().forEach(i => cells_el[i].onclick = e => move(e));
 }
 
-function empty_squares(board = board_state()) {
-    return board.map((_, i) => i).filter(i => board[i] === null);
+function get_empty_cells(given_state = board_state) {
+    return given_state.map((_, i) => i)
+        .filter(i => given_state[i] === null);
 }
 
-function board_state() {
-    return squares.map(square => {
-        let first_child = square.firstElementChild;
-        return first_child === null ? null : first_child.className;
-    });
-}
+function move(e) {
+    game.play_sound();
 
-function move() {
-    app.play_sound();
-    this.appendChild(symbol_element(current_player));
-    this.onclick = null;
+    let cell = e.target;
+    cell.appendChild(draw_symbol(current_player));
+    cell.onclick = null;
+    board_state[cells_el.indexOf(cell)] = current_player.symbol;
 
-    let result = game_result(board_state());
+    let result = game_result(board_state);
     if (result === null) {
         current_player = current_player === player1 ? player2 : player1;
-        show_move();
+        highlight_current_player();
     } else {
         game_over(result);
     }
 }
 
-function game_result(board) {
-    if (check_board(player1, board))
+function game_result(board_state) {
+    if (check_board(player1, board_state))
         return player1;
-    else if (check_board(player2, board))
+    else if (check_board(player2, board_state))
         return player2;
     else
-        return empty_squares(board).length === 0 ? "tie" : null;
+        return get_empty_cells(board_state).length === 0 ? DRAW : null;
 }
 
-function check_board(player, board = board_state()) {
-    for (let combo of win_combos) {
-        if (combo.every(i => board[i] === player.symbol))
+function check_board(player) {
+    for (let combo of WIN_COMBOS) {
+        if (combo.every(i => board_state[i] === player.symbol))
             return combo;
     }
 }
 
 function game_over(player) {
-    remove_click();
+    disable_cell_clicks();
 
-    if (player !== "tie") {
+    if (player !== DRAW) {
         player.score++;
-        check_board(player, board_state()).forEach(i => squares[i].classList.add("win"));
+        check_board(player, board_state).forEach(i => cells_el[i].classList.add("win"));
     }
 
     update_scoreboard();
 }
 
-function remove_click() {
-    squares.forEach(square => square.onclick = null);
+function disable_cell_clicks() {
+    cells_el.forEach(cell => cell.onclick = null);
 }
 
 function computer_move() {
-    remove_click();
+    disable_cell_clicks();
 
     let next_move;
-    if (app.level === "easy") {
+    if (game.difficulty === "easy")
         next_move = random_move();
-    } else if (app.level === "medium") {
-        let random_number = Math.random();
+    else if (game.difficulty === "medium")
+        next_move = (Math.random() < 0.5) ? random_move() : best_move();
+    else
+        next_move = best_move();
 
-        if (random_number < 0.5)
-            next_move = random_move();
-        else
-            next_move = best_move(board_state(), empty_squares());
-
-    } else {
-        next_move = best_move(board_state(), empty_squares());
-    }
-
-    setTimeout(_ => {
-        add_click();
-        squares[next_move].click();
+    setTimeout(() => {
+        enable_cell_clicks();
+        cells_el[next_move].click();
     }, 500);
 }
 
 function random_move() {
-    let empty_squares_list = empty_squares();
-    const random = Math.floor(Math.random() * empty_squares_list.length);
-
-    return empty_squares_list[random];
+    let empty_cells = get_empty_cells();
+    const random = Math.floor(Math.random() * empty_cells.length);
+    return empty_cells[random];
 }
 
-function best_move(board, empty_squares) {
+function best_move() {
     let best_score = -Infinity,
         best_move;
 
-    for (let index of empty_squares) {
-        board[index] = player2.symbol;
-        let score = minimax(board, 0, false);
+    let empty_cells = get_empty_cells();
+    for (let index of empty_cells) {
+        board_state[index] = player2.symbol;
 
+        let score = minimax(board_state, false, 0);
         if (score > best_score) {
             best_score = score;
             best_move = index;
         }
 
-        board[index] = null;
+        board_state[index] = null;
     }
 
     return best_move;
 }
 
-function minimax(board, depth, is_max) {
-    const result = game_result(board);
-
+function minimax(board_state, is_max, depth) {
+    const result = game_result(board_state);
     if (result !== null) {
-        if (result === "tie") return 0;
+        if (result === DRAW)
+            return 0;
+
         return result === player2 ? 100 - depth : -100 + depth;
     }
 
-    const empty_squares_i = empty_squares(board);
+    const empty_cells = get_empty_cells(board_state);
 
     if (is_max) {
-        // maximizer
         let best_score = -Infinity;
-        for (let i of empty_squares_i) {
-            board[i] = player2.symbol;
-            best_score = Math.max(best_score, minimax(board, depth + 1, false));
-            board[i] = null;
+        for (let i of empty_cells) {
+            board_state[i] = player2.symbol;
+            best_score = Math.max(best_score, minimax(board_state, false, depth + 1));
+            board_state[i] = null;
         }
+
         return best_score;
     } else {
-        // minimizer
         let best_score = Infinity;
-        for (let i of empty_squares_i) {
-            board[i] = player1.symbol;
-            best_score = Math.min(best_score, minimax(board, depth + 1, true));
-            board[i] = null;
+        for (let i of empty_cells) {
+            board_state[i] = player1.symbol;
+            best_score = Math.min(best_score, minimax(board_state, true, depth + 1));
+            board_state[i] = null;
         }
+
         return best_score;
     }
 }

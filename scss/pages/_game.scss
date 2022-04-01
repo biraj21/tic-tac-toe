@@ -1,3 +1,10 @@
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 #names {
     display: flex;
     width: 280px;
@@ -31,7 +38,7 @@
     justify-content: space-around;
     transition: background-color 250ms;
 
-    &.current-move {
+    &.turn {
         background: var(--primary-color);
         color: #fff;
 
@@ -54,24 +61,24 @@
     margin-top: 1.5rem;
 
     tr {
-        &:nth-child(1) .square {
+        &:nth-child(1) .cell {
             border-top: none;
         }
 
-        .square:nth-child(3) {
+        .cell:nth-child(3) {
             border-right: none;
         }
 
-        &:nth-child(3) .square {
+        &:nth-child(3) .cell {
             border-bottom: none;
         }
 
-        .square:nth-child(1) {
+        .cell:nth-child(1) {
             border-left: none;
         }
     }
 
-    .square {
+    .cell {
         width: 90px;
         height: 90px;
         border: 3px solid var(--primary-color);

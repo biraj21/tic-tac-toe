@@ -12,11 +12,6 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-@font-face {
-    font-family: Sniglet;
-    src: url("../fonts/Sniglet-Regular.ttf");
-}
-
 :root {
     font-size: 18px;
     font-family: "Sniglet", "Comic Sans MS", "Comic Sans", sans-serif;
@@ -109,7 +104,7 @@ header {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0.6rem 0.5rem;
+    padding: 0.6rem;
     background: var(--primary-color);
     color: #ffffff;
     position: fixed;
@@ -123,15 +118,11 @@ header {
         letter-spacing: 1.5pt;
     }
 
-    #back-btn,
+    #home-btn,
     #settings-btn {
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
         background: transparent;
-    }
-
-    #back-btn {
-        margin-left: 4px;
     }
 }
 
