@@ -16,6 +16,8 @@
 #scoreboard {
     display: flex;
     width: 280px;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 #scoreboard .score-info {
@@ -23,31 +25,26 @@
     width: 50%;
     height: 100%;
     padding: 0.8rem 0;
-    border-radius: 15px 0 0 15px;
     background: #dddcdc;
     color: #000000;
     font-size: 1.5rem;
     justify-content: space-around;
     transition: background-color 250ms;
-}
 
-#scoreboard #p2.score-info {
-    border-radius: 0 15px 15px 0;
-}
+    &.current-move {
+        background: var(--primary-color);
+        color: #fff;
 
-#scoreboard .score-info.current-move {
-    background: var(--primary-color);
-    color: #ffffff;
-}
+        .o {
+            border: 7px solid #fff;
+            color: #fff;
+        }
 
-#scoreboard .score-info.move .o {
-    border: 7px solid #ffffff;
-    color: #ffffff;
-}
-
-#scoreboard .score-info.move .x::before,
-#scoreboard .score-info.move .x::after {
-    background: #ffffff;
+        .x::before,
+        .x::after {
+            background: #fff;
+        }
+    }
 }
 
 #board {
@@ -55,60 +52,58 @@
     height: 270px;
     border-collapse: collapse;
     margin-top: 1.5rem;
-}
 
-#board .square {
-    width: 90px;
-    height: 90px;
-    border: 3px solid var(--primary-color);
-}
+    tr {
+        &:nth-child(1) .square {
+            border-top: none;
+        }
 
-#board .square .o,
-#board .square .x {
-    width: 70%;
-    height: 70%;
-    transition: transform 300ms;
-}
+        .square:nth-child(3) {
+            border-right: none;
+        }
 
-#board .square .o {
-    border: 13px solid var(--color-o);
-}
+        &:nth-child(3) .square {
+            border-bottom: none;
+        }
 
-#board .square .x::before,
-#board .square .x::after {
-    background: var(--color-x);
-    width: 13px;
-    border-radius: 2.7px;
-}
+        .square:nth-child(1) {
+            border-left: none;
+        }
+    }
 
-#board .square.win {
-    --color-o: #009639;
-    --color-x: #009639;
-}
+    .square {
+        width: 90px;
+        height: 90px;
+        border: 3px solid var(--primary-color);
+        cursor: pointer;
 
-#board .row:nth-child(1) .square {
-    border-top: none;
-}
+        &.win {
+            --color-o: #009639;
+            --color-x: #009639;
+        }
 
-#board .row .square:nth-child(3) {
-    border-right: none;
-}
+        .o,
+        .x {
+            width: 70%;
+            height: 70%;
+            transition: transform 300ms;
+        }
 
-#board .row:nth-child(3) .square {
-    border-bottom: none;
-}
+        .o {
+            border: 13px solid var(--color-o);
+        }
 
-#board .row .square:nth-child(1) {
-    border-left: none;
+        .x::before,
+        .x::after {
+            background: var(--color-x);
+            width: 13px;
+            border-radius: 2.7px;
+        }
+    }
 }
 
 #restart-btn {
     width: 150px;
     font-size: 1.2rem;
     margin: 1.5rem auto;
-}
-
-#restart-btn .icon {
-    width: 1.2em;
-    height: 1.2rem;
 }

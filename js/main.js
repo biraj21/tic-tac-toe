@@ -83,8 +83,9 @@ window.onload = e => {
         }
     };
 
-    $("#settings-btn").onclick = e => $("#settings").classList.add("active");
-    $("#save-settings-btn").onclick = e => $("#settings").classList.remove("active");
+    let settings = $("#settings");
+    $("#settings-btn").onclick = () => settings.classList.add("active");
+    $("#save-settings-btn").onclick = () => settings.classList.remove("active");
 
     document.querySelectorAll(".toggle-btn").forEach(btn => {
         btn.addEventListener(
@@ -94,10 +95,9 @@ window.onload = e => {
     });
 
     $("#theme-btn").addEventListener("click", () => change_theme());
+    $("#sound-btn").addEventListener("click", () => app.sound = !app.sound);
 
-    $("#sound-btn").addEventListener("click", e => (app.sound = !app.sound));
-
-    $("#single-player-btn").onclick = e => {
+    $("#single-player-btn").onclick = () => {
         app.mode = "single-player";
 
         player1.name = "You";
@@ -109,31 +109,31 @@ window.onload = e => {
         app.active_page = levels;
     };
 
-    $("#multi-player-btn").onclick = e => {
+    $("#multi-player-btn").onclick = () => {
         app.mode = "multi-player";
 
         player1.name = "Player 1";
         player2.name = "Player 2";
 
-        start_game(e, true);
+        start_game(true);
     };
 
-    $("#easy-btn").onclick = e => {
+    $("#easy-btn").onclick = () => {
         app.level = "easy";
-        start_game(e, true);
+        start_game(true);
     };
 
-    $("#medium-btn").onclick = e => {
+    $("#medium-btn").onclick = () => {
         app.level = "medium";
-        start_game(e, true);
+        start_game(true);
     };
 
-    $("#impossible-btn").onclick = e => {
+    $("#impossible-btn").onclick = () => {
         app.level = "impossible";
-        start_game(e, true);
+        start_game(true);
     };
 
-    $("#restart-btn").onclick = e => start_game(e, false);
+    $("#restart-btn").onclick = () => start_game(false);
 };
 
 function $(selector) {
@@ -158,7 +158,7 @@ function change_theme() {
         root.classList.add("light");
 }
 
-function start_game(e, new_game = true) {
+function start_game(new_game = true) {
     current_player = player1;
 
     app.active_page = game;
@@ -208,12 +208,12 @@ function update_scoreboard() {
 }
 
 function show_move() {
-    $(".move").classList.remove("move");
+    $(".current-move").classList.remove("current-move");
 
     if (current_player === player1)
-        $("#p1").classList.add("move");
+        $("#p1").classList.add("current-move");
     else
-        $("#p2").classList.add("move");
+        $("#p2").classList.add("current-move");
 
     // after showing move
     if (app.mode === "single-player" && current_player === player2)
