@@ -25,7 +25,6 @@ const game = {
 
     play_sound() {
         if (game.sound) {
-            game.tap_sound.pause();
             game.tap_sound.currentTime = 0;
             game.tap_sound.play();
         }
@@ -59,11 +58,6 @@ window.onload = e => {
 
     // adding events
     game.tap_sound = new Audio("/audio/tapsound.mp3");
-
-    cells_el.forEach(cell => cell.addEventListener(
-        "click",
-        () => game.play_sound()
-    ));
 
     document.querySelectorAll("#symbols .symbol")
         .forEach(symbol => symbol.onclick = choose_symbol);
@@ -203,7 +197,17 @@ function draw_symbol(player) {
 }
 
 function enable_cell_clicks() {
-    get_empty_cells().forEach(i => cells_el[i].onclick = e => player_move(e));
+    get_empty_cells().forEach(i => {
+        cells_el[i].addEventListener("click", game.play_sound);
+        cells_el[i].onclick = e => make_move(e);
+    });
+}
+
+function disable_cell_clicks() {
+    cells_el.forEach(cell => {
+        cell.removeEventListener("click", game.play_sound);
+        cell.onclick = null;
+    });
 }
 
 function get_empty_cells(given_state = board_state) {
@@ -211,12 +215,13 @@ function get_empty_cells(given_state = board_state) {
         .filter(i => given_state[i] === null);
 }
 
-function player_move(e) {
+function make_move(e) {
     game.play_sound();
 
     let cell = e.target;
     cell.appendChild(draw_symbol(current_player));
     cell.onclick = null;
+    cell.removeEventListener("click", game.play_sound);
     board_state[cells_el.indexOf(cell)] = current_player.symbol;
 
     let result = game_result(board_state);
@@ -258,9 +263,7 @@ function game_over(player) {
     update_scoreboard();
 }
 
-function disable_cell_clicks() {
-    cells_el.forEach(cell => cell.onclick = null);
-}
+
 
 function computer_move() {
     disable_cell_clicks();
