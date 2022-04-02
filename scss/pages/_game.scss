@@ -33,14 +33,16 @@
     height: 100%;
     padding: 0.8rem 0;
     background: #dddcdc;
-    color: #000000;
+    color: #000;
     font-size: 1.5rem;
     justify-content: space-around;
     transition: background-color 250ms;
 
     &.turn {
         background: var(--primary-color);
+        box-shadow: 0 0 10px var(--primary-color);
         color: #fff;
+        z-index: 100;
 
         .o {
             border: 7px solid #fff;

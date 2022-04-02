@@ -16,12 +16,13 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        box-shadow: 0 0 5px var(--primary-color);
         background: #fff;
         color: var(--primary-color);
 
         &.selected {
             background: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+
 
             .o {
                 border: 7px solid #fff;

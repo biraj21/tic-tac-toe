@@ -60,10 +60,10 @@ window.onload = e => {
     // adding events
     game.tap_sound = new Audio("/audio/tapsound.mp3");
 
-    document.querySelectorAll("button")
-        .forEach(btn => {
-            btn.addEventListener("click", () => game.play_sound());
-        });
+    cells_el.forEach(cell => cell.addEventListener(
+        "click",
+        () => game.play_sound()
+    ));
 
     document.querySelectorAll("#symbols .symbol")
         .forEach(symbol => symbol.onclick = choose_symbol);
