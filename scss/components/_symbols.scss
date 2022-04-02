@@ -1,0 +1,40 @@
+/* O and X */
+.o,
+.x {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+    pointer-events: none;
+
+}
+
+.o {
+    border: 7px solid var(--primary-color);
+    border-radius: 50%;
+    background: transparent;
+}
+
+.x {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &::before,
+    &::after {
+        content: "";
+        display: block;
+        width: 7px;
+        height: 100%;
+        border-radius: 2px;
+        background: var(--primary-color);
+        transform-origin: center;
+        position: absolute;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        transform: rotate(-45deg);
+    }
+}

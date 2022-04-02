@@ -33,12 +33,12 @@ const game = {
 
 const player1 = {
         name: "Player 1",
-        symbol: O,
+        symbol: X,
         score: 0,
     },
     player2 = {
         name: "Player 2",
-        symbol: X,
+        symbol: O,
         score: 0,
     };
 

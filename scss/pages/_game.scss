@@ -9,15 +9,15 @@
     display: flex;
     width: 280px;
     padding: 0 1rem 0.2rem;
-}
 
-#names .name {
-    width: 50%;
-    font-size: 1rem;
-}
+    .name {
+        width: 50%;
+        font-size: 1rem;
+    }
 
-#names #p2-name {
-    text-align: right;
+    #p2-name {
+        text-align: right;
+    }
 }
 
 #scoreboard {
@@ -89,13 +89,22 @@
         &.win {
             --color-o: #009639;
             --color-x: #009639;
+            animation-name: blink;
+            animation-duration: 350ms;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
+            animation-iteration-count: 3;
+            animation-delay: 400ms;
         }
 
         .o,
         .x {
             width: 70%;
             height: 70%;
-            transition: transform 300ms;
+            animation-name: appear;
+            animation-duration: 150ms;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
         }
 
         .o {
@@ -115,4 +124,28 @@
     width: 150px;
     font-size: 1.2rem;
     margin: 1.5rem auto;
+}
+
+@keyframes appear {
+    0% {
+        transform: scale(0);
+    }
+
+    80% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes blink {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
