@@ -21,6 +21,7 @@
     --text-main: #fff;
     --primary-color: #da3232;
 
+    --game-draw-bg: rgba(0, 0, 0, 0.6);
     --color-o: #007dff;
     --color-x: #ffd000;
 
@@ -30,6 +31,7 @@
 :root.light {
     --bg-main: #fff;
     --text-main: #000;
+    --game-draw-bg: rgba(255, 255, 255, 0.6);
 }
 
 .flex {

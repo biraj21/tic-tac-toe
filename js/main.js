@@ -46,12 +46,13 @@ let current_player = player1;
 const board_state = Array(9);
 
 // elements
-let home_el, difficulty_el, game_el, cells_el, p1_name_el, p2_name_el;
+let home_el, difficulty_el, game_el, board_el, cells_el, p1_name_el, p2_name_el;
 
 window.onload = e => {
     home_el = $("#home");
     difficulty_el = $("#difficulty");
     game_el = $("#game");
+    board_el = $("#board");
     cells_el = Array.from(document.querySelectorAll(".cell"));
     p1_name_el = $("#p1-name");
     p2_name_el = $("#p2-name");
@@ -145,6 +146,7 @@ function change_theme() {
 function start_game(new_game = true) {
     current_player = player1;
     game.active_page = game_el;
+    board_el.classList.remove("game-draw");
 
     // reset scores if it's a new game
     if (new_game) {
@@ -255,7 +257,9 @@ function check_board(player) {
 function game_over(player) {
     disable_cell_clicks();
 
-    if (player !== DRAW) {
+    if (player === DRAW) {
+        board_el.classList.add("game-draw");
+    } else {
         player.score++;
         check_board(player, board_state).forEach(i => cells_el[i].classList.add("win"));
     }
@@ -296,7 +300,7 @@ function best_move() {
     for (let index of empty_cells) {
         board_state[index] = player2.symbol;
 
-        let score = minimax(board_state, false, 0);
+        let score = minimax(board_state, false, 0, -Infinity, Infinity);
         if (score > best_score) {
             best_score = score;
             best_move = index;
@@ -308,7 +312,8 @@ function best_move() {
     return best_move;
 }
 
-function minimax(board_state, is_max, depth) {
+
+function minimax(board_state, is_max, depth, alpha, beta) {
     const result = game_result(board_state);
     if (result !== null) {
         if (result === DRAW)
@@ -323,8 +328,16 @@ function minimax(board_state, is_max, depth) {
         let best_score = -Infinity;
         for (let i of empty_cells) {
             board_state[i] = player2.symbol;
-            best_score = Math.max(best_score, minimax(board_state, false, depth + 1));
+            best_score = Math.max(
+                best_score,
+                minimax(board_state, false, depth + 1, alpha, beta)
+            );
+
             board_state[i] = null;
+
+            alpha = Math.max(alpha, best_score);
+            if (alpha >= beta)
+                break;
         }
 
         return best_score;
@@ -332,8 +345,16 @@ function minimax(board_state, is_max, depth) {
         let best_score = Infinity;
         for (let i of empty_cells) {
             board_state[i] = player1.symbol;
-            best_score = Math.min(best_score, minimax(board_state, true, depth + 1));
+            best_score = Math.min(
+                best_score,
+                minimax(board_state, true, depth + 1, alpha, beta)
+            );
+
             board_state[i] = null;
+
+            beta = Math.min(beta, best_score);
+            if (beta <= alpha)
+                break;
         }
 
         return best_score;
