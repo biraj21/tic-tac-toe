@@ -25,33 +25,33 @@
     width: 280px;
     border-radius: 15px;
     overflow: hidden;
-}
 
-#scoreboard .score-info {
-    display: flex;
-    width: 50%;
-    height: 100%;
-    padding: 0.8rem 0;
-    background: #dddcdc;
-    color: #000;
-    font-size: 1.5rem;
-    justify-content: space-around;
-    transition: background-color 250ms;
+    .score-info {
+        display: flex;
+        width: 50%;
+        height: 100%;
+        padding: 0.8rem 0;
+        background: #dddcdc;
+        color: #000;
+        font-size: 1.5rem;
+        justify-content: space-around;
+        transition: background-color 250ms;
 
-    &.turn {
-        background: var(--primary-color);
-        box-shadow: 0 0 10px var(--primary-color);
-        color: #fff;
-        z-index: 100;
-
-        .o {
-            border: 7px solid #fff;
+        &.turn {
+            background: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
             color: #fff;
-        }
+            z-index: 100;
 
-        .x::before,
-        .x::after {
-            background: #fff;
+            .o {
+                border: 7px solid #fff;
+                color: #fff;
+            }
+
+            .x::before,
+            .x::after {
+                background: #fff;
+            }
         }
     }
 }

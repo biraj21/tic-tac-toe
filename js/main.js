@@ -53,13 +53,14 @@ window.onload = e => {
     difficulty_el = $("#difficulty");
     game_el = $("#game");
     board_el = $("#board");
-    cells_el = Array.from(document.querySelectorAll(".cell"));
+    cells_el = document.querySelectorAll(".cell");
     p1_name_el = $("#p1-name");
     p2_name_el = $("#p2-name");
 
-    // adding events
     game.tap_sound = new Audio("/audio/tapsound.mp3");
+    cells_el.forEach((cell, i) => cell.setAttribute("data-index", i));
 
+    // adding events
     document.querySelectorAll("#symbols .symbol")
         .forEach(symbol => symbol.onclick = choose_symbol);
 
@@ -69,9 +70,9 @@ window.onload = e => {
         home_el.className = "active";
     };
 
-    let settings = $("#settings");
-    $("#settings-btn").onclick = () => settings.classList.add("active");
-    $("#save-settings-btn").onclick = () => settings.classList.remove("active");
+    const settings_el = $("#settings");
+    $("#settings-btn").onclick = () => settings_el.classList.add("active");
+    $("#save-settings-btn").onclick = () => settings_el.classList.remove("active");
 
     document.querySelectorAll(".toggle-btn")
         .forEach(btn => btn.addEventListener(
@@ -220,13 +221,15 @@ function get_empty_cells(given_state = board_state) {
 function make_move(e) {
     game.play_sound();
 
-    let cell = e.target;
+    const cell = e.target;
     cell.appendChild(draw_symbol(current_player));
     cell.onclick = null;
     cell.removeEventListener("click", game.play_sound);
-    board_state[cells_el.indexOf(cell)] = current_player.symbol;
 
-    let result = game_result(board_state);
+    const cell_index = Number(cell.getAttribute("data-index"));
+    board_state[cell_index] = current_player.symbol;
+
+    const result = game_result(board_state);
     if (result === null) {
         current_player = current_player === player1 ? player2 : player1;
         highlight_current_player();
@@ -267,18 +270,16 @@ function game_over(player) {
     update_scoreboard();
 }
 
-
-
 function computer_move() {
     disable_cell_clicks();
 
     let next_move;
     if (game.difficulty === "easy")
-        next_move = random_move();
+        next_move = get_random_move();
     else if (game.difficulty === "medium")
-        next_move = (Math.random() < 0.5) ? random_move() : best_move();
+        next_move = (Math.random() < 0.4) ? random_move() : best_move();
     else
-        next_move = best_move();
+        next_move = get_best_move();
 
     setTimeout(() => {
         enable_cell_clicks();
@@ -286,21 +287,21 @@ function computer_move() {
     }, 500);
 }
 
-function random_move() {
+function get_random_move() {
     let empty_cells = get_empty_cells();
     const random = Math.floor(Math.random() * empty_cells.length);
     return empty_cells[random];
 }
 
-function best_move() {
+function get_best_move() {
     let best_score = -Infinity,
         best_move;
 
-    let empty_cells = get_empty_cells();
+    const empty_cells = get_empty_cells();
     for (let index of empty_cells) {
         board_state[index] = player2.symbol;
 
-        let score = minimax(board_state, false, 0, -Infinity, Infinity);
+        let score = minimax(board_state, false, 0, best_score, Infinity);
         if (score > best_score) {
             best_score = score;
             best_move = index;
@@ -311,7 +312,6 @@ function best_move() {
 
     return best_move;
 }
-
 
 function minimax(board_state, is_max, depth, alpha, beta) {
     const result = game_result(board_state);
@@ -332,9 +332,16 @@ function minimax(board_state, is_max, depth, alpha, beta) {
                 best_score,
                 minimax(board_state, false, depth + 1, alpha, beta)
             );
-
             board_state[i] = null;
 
+            /*
+             * alpha is the score that the Max (current node) is considering.
+             * beta is the score that the Min (parent node) is considering.
+             * Now if Max finds a score that is greater than or equal to beta
+             * (alpha >= beta), Min will stop exploring Max because whatever
+             * move that Max would otherwise choose will be greater than or
+             * equal to alpha.  
+             */
             alpha = Math.max(alpha, best_score);
             if (alpha >= beta)
                 break;
@@ -349,9 +356,16 @@ function minimax(board_state, is_max, depth, alpha, beta) {
                 best_score,
                 minimax(board_state, true, depth + 1, alpha, beta)
             );
-
             board_state[i] = null;
 
+            /*
+             * alpha is the score that the Max (parent node) is considering.
+             * beta is the score that the Min (current node) is considering.
+             * Now if Min finds a score that is less than or equal to alpha
+             * (beta <= alpha), Max will stop exploring Min because whatever
+             * move that Min would otherwise choose will be less than or
+             * equal to beta.
+             */
             beta = Math.min(beta, best_score);
             if (beta <= alpha)
                 break;
