@@ -277,7 +277,7 @@ function computer_move() {
     if (game.difficulty === "easy")
         next_move = get_random_move();
     else if (game.difficulty === "medium")
-        next_move = (Math.random() < 0.4) ? random_move() : best_move();
+        next_move = (Math.random() < 0.4) ? get_random_move() : get_best_move();
     else
         next_move = get_best_move();
 
