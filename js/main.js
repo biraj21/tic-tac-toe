@@ -11,6 +11,10 @@ const WIN_COMBOS = [
     [2, 4, 6],
 ];
 
+const DIFFICULTY_EASY = "easy";
+const DIFFICULTY_MEDIUM = "medium";
+const DIFFICULTY_IMPOSSIBLE = "impossible";
+
 const O = "o";
 const X = "x";
 
@@ -105,17 +109,17 @@ window.onload = e => {
     };
 
     $("#easy-btn").onclick = () => {
-        game.difficulty = "easy";
+        game.difficulty = DIFFICULTY_EASY;
         start_game();
     };
 
     $("#medium-btn").onclick = () => {
-        game.difficulty = "medium";
+        game.difficulty = DIFFICULTY_MEDIUM;
         start_game();
     };
 
     $("#impossible-btn").onclick = () => {
-        game.difficulty = "impossible";
+        game.difficulty = DIFFICULTY_IMPOSSIBLE;
         start_game();
     };
 
@@ -229,7 +233,7 @@ function make_move(e) {
     const cell_index = Number(cell.getAttribute("data-index"));
     board_state[cell_index] = current_player.symbol;
 
-    const result = game_result(board_state);
+    const result = get_game_result(board_state);
     if (result === null) {
         current_player = current_player === player1 ? player2 : player1;
         highlight_current_player();
@@ -241,7 +245,7 @@ function make_move(e) {
     }
 }
 
-function game_result(board_state) {
+function get_game_result(board_state) {
     if (check_board(player1, board_state))
         return player1;
     else if (check_board(player2, board_state))
@@ -273,18 +277,56 @@ function game_over(player) {
 function computer_move() {
     disable_cell_clicks();
 
-    let next_move;
-    if (game.difficulty === "easy")
-        next_move = get_random_move();
-    else if (game.difficulty === "medium")
-        next_move = (Math.random() < 0.3) ? get_random_move() : get_best_move();
-    else
-        next_move = get_best_move();
-
+    const next_move = choose_computer_move();
     setTimeout(() => {
         enable_cell_clicks();
         cells_el[next_move].click();
     }, 500);
+}
+
+function choose_computer_move() {
+    const empty_cells = get_empty_cells();
+
+    if (game.difficulty === DIFFICULTY_EASY) {
+        // check if AI can win
+        for (let i of empty_cells) {
+            board_state[i] = current_player.symbol;
+            if (get_game_result(board_state) === player2) {
+                board_state[i] = null;
+                return i;
+            }
+
+            board_state[i] = null;
+        }
+
+        return get_random_move();
+    } else if (game.difficulty === DIFFICULTY_MEDIUM) {
+        // check if AI can win
+        for (let i of empty_cells) {
+            board_state[i] = current_player.symbol;
+            if (get_game_result(board_state) == player2) {
+                board_state[i] = null;
+                return i;
+            }
+
+            board_state[i] = null;
+        }
+
+        // check if opponent can win
+        for (let i of empty_cells) {
+            board_state[i] = player1.symbol;
+            if (get_game_result(board_state) == player1) {
+                board_state[i] = null;
+                return i;
+            }
+
+            board_state[i] = null;
+        }
+
+        return Math.random() < 0.5 ? get_random_move() : get_best_move();
+    } else {
+        return get_best_move();
+    }
 }
 
 function get_random_move() {
@@ -314,7 +356,7 @@ function get_best_move() {
 }
 
 function minimax(board_state, is_max, depth, alpha, beta) {
-    const result = game_result(board_state);
+    const result = get_game_result(board_state);
     if (result !== null) {
         if (result === DRAW)
             return 0;
