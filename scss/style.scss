@@ -1,7 +1,5 @@
 @use "components/button";
 @use "components/symbols";
-@use "components/toggle-button";
-@use "components/settings";
 @use "pages/difficulty";
 @use "pages/game";
 @use "pages/home";
@@ -11,6 +9,11 @@
     padding: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+@font-face {
+    font-family: Sniglet;
+    src: url("../fonts/Sniglet/Sniglet-Regular.ttf"); // relative css directory
 }
 
 :root {
@@ -67,7 +70,7 @@ header {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0.6rem;
+    padding: 0.6rem 0.8rem;
     background: var(--primary-color);
     color: #ffffff;
     position: fixed;
@@ -82,27 +85,14 @@ header {
     }
 
     #home-btn,
-    #settings-btn {
+    #theme-btn {
         width: 24px;
         height: 24px;
         background: transparent;
     }
-}
 
-footer {
-    width: 100vw;
-    text-align: center;
-    padding-bottom: 2rem;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-
-    a {
-        color: dodgerblue;
-    }
-
-    @media only screen and (max-height: 440px) {
-        position: static;
+    #sun-svg {
+        display: none;
     }
 }
 

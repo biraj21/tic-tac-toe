@@ -21,7 +21,7 @@
         color: var(--primary-color);
         transition: background-color 250ms, box-shadow 250ms;
 
-        &.selected {
+        &--selected {
             border: none;
             background: var(--primary-color);
             box-shadow: 0 0 10px var(--primary-color);

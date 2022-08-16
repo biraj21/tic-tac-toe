@@ -1,152 +1,164 @@
 <!DOCTYPE html>
 
 <html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./css/style.css" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
+        <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/favicon/site.webmanifest">
+        <link rel="manifest" href="./favicon/site.webmanifest" />
 
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Tic Tac Toe</title>
-</head>
+        <title>Tic Tac Toe</title>
+    </head>
 
-<body class="flex">
-    <header>
-        <button id="home-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-home">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-        </button>
-
-        <h1>Tic Tac Toe</h1>
-
-        <button id="settings-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-settings">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path
-                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-                </path>
-            </svg>
-        </button>
-    </header>
-
-    <!-- Home Page -->
-    <div id="home">
-        <div id="symbols-container" class="flex">
-            <h3>Play As</h3>
-
-            <div id="symbols">
-                <button class="symbol selected flex">
-                    <span class="x"></span>
-                </button>
-
-                <button class="symbol flex">
-                    <span class="o"></span>
-                </button>
-            </div>
-        </div>
-
-        <div id="modes">
-            <button id="single-player-btn" class="btn">Computer</button>
-            <button id="multi-player-btn" class="btn">2 Players</button>
-        </div>
-    </div>
-
-    <!-- Select Difficulty Page (when playing with computer) -->
-    <div id="difficulty" class="inactive">
-        <h3>Difficulty</h3>
-
-        <button id="easy-btn" class="btn">Easy</button>
-        <button id="medium-btn" class="btn">Medium</button>
-        <button id="impossible-btn" class="btn">Impossible</button>
-    </div>
-
-    <!-- Game Page (where board is there) -->
-    <div id="game" class="inactive">
-        <div id="names">
-            <p id="p1-name" class="name"></p>
-            <p id="p2-name" class="name"></p>
-        </div>
-
-        <div id="scoreboard">
-            <div id="p1" class="score-info turn">
-                <p class="score-head flex">
-                    <span class="o"></span>
-                </p>
-
-                <p class="score flex">0</p>
-            </div>
-
-            <div id="p2" class="score-info">
-                <p class="score-head flex">
-                    <span class="x"></span>
-                </p>
-
-                <p class="score flex">0</p>
-            </div>
-        </div>
-
-        <table id="board">
-            <tr>
-                <td class="cell"></td>
-                <td class="cell"></td>
-                <td class="cell"></td>
-            </tr>
-            <tr>
-                <td class="cell"></td>
-                <td class="cell"></td>
-                <td class="cell"></td>
-            </tr>
-            <tr>
-                <td class="cell"></td>
-                <td class="cell"></td>
-                <td class="cell"></td>
-            </tr>
-        </table>
-
-        <button id="restart-btn" class="btn">Restart</button>
-    </div>
-
-    <div id="settings">
-        <h3>Settings</h3>
-
-        <div class="setting">
-            Dark Mode
-            <button id="theme-btn" class="toggle-btn toggle-btn--on">
-                <span class="circle"></span>
+    <body class="flex">
+        <header>
+            <button id="home-btn">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-home"
+                >
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
             </button>
-        </div>
 
-        <div class="setting">
-            Tap Sound
-            <button id="sound-btn" class="toggle-btn toggle-btn--on">
-                <span class="circle"></span>
+            <h1>Tic Tac Toe</h1>
+
+            <button id="theme-btn">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    id="sun-svg"
+                >
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    id="moon-svg"
+                >
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
             </button>
+        </header>
+
+        <!-- Home Page -->
+        <div id="home">
+            <div id="symbols-container" class="flex">
+                <h3>Play As</h3>
+
+                <div id="symbols">
+                    <button class="symbol symbol--selected flex">
+                        <span class="x"></span>
+                    </button>
+
+                    <button class="symbol flex">
+                        <span class="o"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="modes">
+                <button id="single-player-btn" class="btn">Computer</button>
+                <button id="multi-player-btn" class="btn">2 Players</button>
+            </div>
         </div>
 
-        <button id="save-settings-btn" class="btn">OK</button>
-    </div>
+        <!-- Select Difficulty Page (when playing with computer) -->
+        <div id="difficulty" class="inactive">
+            <h3>Difficulty</h3>
 
-    <footer>
-        Created by <a href="https://github.com/biraj21/" target="_blank">Biraj</a>.
-    </footer>
+            <button id="easy-btn" class="btn" data-difficulty="Easy">Easy</button>
+            <button id="medium-btn" class="btn" data-difficulty="Medium">Medium</button>
+            <button id="impossible-btn" class="btn" data-difficulty="Impossible">Impossible</button>
+        </div>
 
-    <script src=" js/main.js"></script>
-</body>
+        <!-- Game Page (where board is there) -->
+        <div id="game" class="flex inactive">
+            <h3 id="game-mode"></h3>
 
+            <div id="names">
+                <p id="p1-name" class="name"></p>
+                <p id="p2-name" class="name"></p>
+            </div>
+
+            <div id="scoreboard">
+                <div id="p1" class="score-info turn">
+                    <p class="score-head flex">
+                        <span class="o"></span>
+                    </p>
+
+                    <p class="score flex">0</p>
+                </div>
+
+                <div id="p2" class="score-info">
+                    <p class="score-head flex">
+                        <span class="x"></span>
+                    </p>
+
+                    <p class="score flex">0</p>
+                </div>
+            </div>
+
+            <table id="board">
+                <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                </tr>
+                <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                </tr>
+                <tr>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                    <td class="cell"></td>
+                </tr>
+            </table>
+
+            <button id="restart-btn" class="btn">Restart</button>
+        </div>
+
+        <script src="./js/main.js"></script>
+    </body>
 </html>
